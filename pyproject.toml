@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "xqp"
+version = "0.1.0"
+description = "Cross-layer Query-aware Predictor for tier-aware KV cache management"
+authors = [{name = "Anonymous (withheld for double-blind review)"}]
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "scikit-learn>=1.4",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+torch = ["torch>=2.3"]
+trt = ["onnx", "onnxruntime-gpu", "tensorrt"]
+eval = ["datasets", "evaluate", "transformers>=4.44"]
+# headline GBDT baseline (icdm_full.json) needs LightGBM; without it baselines.py
+# silently falls back to a weaker/slower sklearn GBDT, changing the numbers.
+bench = ["lightgbm>=4.0"]
+# figure generation (paper_icdm/figures)
+paper = ["matplotlib>=3.8"]
+# everything the CPU test suite + analysis drivers need (no GPU): the headline
+# GBDT baseline (lightgbm), figures (matplotlib), and pytest itself. Install with
+#   pip install -e .[test]
+# then `pytest` works from the repo root with no further setup.
+test = ["pytest>=8", "lightgbm>=4.0", "matplotlib>=3.8"]
+
+[project.scripts]
+xqp-train = "xqp.train_cli:main"
+xqp-eval = "xqp.eval:main"
+
+[tool.setuptools.packages.find]
+include = ["xqp*"]
+
+[tool.pytest.ini_options]
+# Make `pytest` work from the repo root in a fresh `pip install -e .[test]` env
+# without per-file sys.path hacks: the ICDM driver tests import modules from
+# experiments/, and the lib tests import xqp from the repo root.
+pythonpath = [".", "experiments"]
+testpaths = ["tests"]

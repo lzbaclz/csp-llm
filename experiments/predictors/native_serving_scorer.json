@@ -1,0 +1,12 @@
+{
+  "weights": [
+    3757.03148128959,
+    2.414793652306257,
+    0.0,
+    6.181181196712948
+  ],
+  "bias": -6.796006920470472,
+  "per_layer": false,
+  "features": "[within_accum, native_cross, 0, exp(-recency/64)]",
+  "trained_on": "llama serving oracle"
+}

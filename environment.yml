@@ -1,0 +1,23 @@
+# Conda env for csp-llm / XQP.
+#
+#   cd ~/codes/csp-llm
+#   conda env create -f environment.yml     # creates env `csp-llm`
+#   conda activate csp-llm
+#   pytest                                   # 81 CPU tests, no GPU needed
+#
+# This file provisions the CPU analysis + test + figure environment (everything
+# the ICDM result JSONs, the unit tests, and paper_icdm/figures need). The GPU
+# *collection* path additionally needs a CUDA build of torch + transformers,
+# which are environment-specific and installed separately, e.g.:
+#   pip install "torch==2.6.*" --index-url https://download.pytorch.org/whl/cu124
+#   pip install -e ".[eval]"                 # transformers, datasets
+name: csp-llm
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      # the package + its CPU analysis/test/figure extras (numpy, scipy,
+      # scikit-learn, pyyaml, lightgbm, matplotlib, pytest) — see pyproject.toml
+      - -e .[test,paper]

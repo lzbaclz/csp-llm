@@ -1,0 +1,47 @@
+{
+  "name": "within+cross calibrated logistic (KVSalienceBench reference baseline)",
+  "protocol": "kvsaliencebench-1.0",
+  "feature_columns": [
+    "s_within",
+    "s_cross",
+    "s_query",
+    "s_pos"
+  ],
+  "used_features": [
+    "s_within",
+    "s_cross"
+  ],
+  "params": 3,
+  "score": "sigmoid(w_within*s_within + w_cross*s_cross + bias)",
+  "weights": {
+    "s_within": 3.292050838470459,
+    "s_cross": 3.8994386196136475,
+    "s_query": 0.0,
+    "s_pos": 0.0
+  },
+  "bias": -3.427011013031006,
+  "fit": {
+    "method": "Newton-IRLS + L2 ridge (l2=1e-3)",
+    "trained_on": "/public/xqp_traces/*.jsonl",
+    "cap_rows_per_file": 400000,
+    "n_train_rows": 10127459,
+    "n_workloads": 32
+  },
+  "reference_metrics": {
+    "protocol": "kvsaliencebench-1.0",
+    "horizon": "h4",
+    "n_test": 2564289,
+    "n_test_requests": 18,
+    "pos_rate": 0.11257077497895128,
+    "auc": 0.9311657523219434,
+    "auprc": 0.7297293117900183,
+    "p_at_k": 0.7496928974491964,
+    "r_at_k": 0.6659749743646592,
+    "ece": 0.00927098624475162,
+    "brier": 0.053168941893595716,
+    "auc_ci95": [
+      0.9100945773314165,
+      0.9482619671254714
+    ]
+  }
+}

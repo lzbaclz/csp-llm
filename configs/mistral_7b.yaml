@@ -1,0 +1,36 @@
+model:
+  hf_id: mistralai/Mistral-7B-Instruct-v0.3
+  dtype: fp16
+  attn_impl: eager
+  max_context: 4096
+  # Mistral-7B is the cross-*family* check (sliding-window attention in v0.1/0.2;
+  # v0.3 is dense). Used to stress the frozen-weight transfer claim (§6, Table 4).
+  n_kv_heads: 8
+
+trace:
+  workload: mooncake-chat
+  n_traces: 200
+  r_label: 0.10
+  horizons: [1, 4, 16, 64]
+
+predictor:
+  variant: closed_form
+  per_layer: false
+  l2: 0.001
+  val_frac: 0.20
+  normalize_features: true
+
+deploy:
+  backend: tensorrt
+  precision: fp16
+  static_batch: 4096
+  cuda_graph: true
+
+policy:
+  n_sink: 4
+  n_window: 4
+  r_cross: 0.10
+  w_recency: 64.0
+  fallback_p_threshold: 0.4
+  fallback_window: 100
+  recovery_tau: 16
